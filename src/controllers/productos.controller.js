@@ -2,16 +2,18 @@ import { pool } from "../db.js";
 
 export const getProductos = async (req, res) => {
   //Declaramos una variable para la consulta (y con una consulta por defecto)
-  let sqlQuery = "SELECT * FROM productos";
+  let sqlQuery = "SELECT * FROM productos ORDER BY producto LIMIT 50;";
   //Obtenemos el query param
   const producto = req.query.producto;
   try {
-    if (!(typeof producto === 'undefined')) {
+    if (!(typeof producto === "undefined")) {
       sqlQuery =
-        "SELECT * FROM productos WHERE producto like '%" + producto + "%' ORDER BY producto LIMIT 50;";
+        "SELECT * FROM productos WHERE producto like '%" +
+        producto +
+        "%' ORDER BY producto LIMIT 50;";
     }
     const [rows] = await pool.query(sqlQuery);
-    res.json(rows);
+    res.json({ response: "success", results: rows });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -57,7 +57,7 @@ export const createProducto = async (req, res) => {
         observaciones,
       ]
     );
-    res.send({ rows });
+    res.send({ id: rows.insertId, producto, nombre2, precio_compra, precio_venta, codigo_barras, observaciones});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -1,18 +1,39 @@
 import { pool } from "../db.js";
 
 export const getProductos = async (req, res) => {
-  //Declaramos una variable para la consulta (y con una consulta por defecto)
-  let sqlQuery = "SELECT * FROM productos ORDER BY producto LIMIT 50;";
   //Obtenemos el query param
   const producto = req.query.producto;
+
+  let rows;
+
   try {
     if (!(typeof producto === "undefined")) {
-      sqlQuery =
+      //consulta exacta por codigo de barra
+      const [exact_result] = await pool.query(
+        "SELECT * FROM productos WHERE codigo_barras = ? LIMIT 1;",
+        producto
+      );
+      //consulta por nombres
+      const [partial_result] = await pool.query(
         "SELECT * FROM productos WHERE producto like '%" +
-        producto +
-        "%' ORDER BY producto LIMIT 50;";
+          producto +
+          "%' ORDER BY producto LIMIT 50;"
+      );
+
+      //Si hay coincidencia exacta
+      if (exact_result.length > 0) {
+        rows = exact_result;
+      } else {
+        rows = partial_result;
+      }
+    } else {
+      const [all_result] = await pool.query(
+        "SELECT * FROM productos ORDER BY producto LIMIT 50;"
+      );
+
+      rows = all_result;
     }
-    const [rows] = await pool.query(sqlQuery);
+
     res.json({ response: "success", results: rows });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -22,7 +43,7 @@ export const getProductos = async (req, res) => {
 export const getProducto = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM productos WHERE id = ? ", [
-      req.params.codigo_barras,
+      req.params.id,
     ]);
     if (rows.length <= 0)
       return res.status(404).json({
@@ -57,7 +78,15 @@ export const createProducto = async (req, res) => {
         observaciones,
       ]
     );
-    res.send({ id: rows.insertId, producto, nombre2, precio_compra, precio_venta, codigo_barras, observaciones});
+    res.send({
+      id: rows.insertId,
+      producto,
+      nombre2,
+      precio_compra,
+      precio_venta,
+      codigo_barras,
+      observaciones,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

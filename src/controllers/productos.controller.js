@@ -7,7 +7,7 @@ export const getProductos = async (req, res) => {
   let rows;
 
   try {
-    if (!(typeof producto === "undefined")) {
+    if (producto != "") {
       //consulta exacta por codigo de barra
       const [exact_result] = await pool.query(
         "SELECT * FROM productos WHERE codigo_barras = ? LIMIT 1;",

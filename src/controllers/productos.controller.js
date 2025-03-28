@@ -1,4 +1,5 @@
 import { pool } from "../db.js";
+import { saveImage } from "./images.controller.js";
 
 export const getProductos = async (req, res) => {
   //Obtenemos el query param
@@ -64,11 +65,12 @@ export const createProducto = async (req, res) => {
     precio_venta,
     codigo_barras,
     observaciones,
+    image
   } = req.body;
 
   try {
     const [rows] = await pool.query(
-      "INSERT INTO productos (producto, nombre2, precio_compra, precio_venta, codigo_barras, observaciones) VALUES (?,?,?,?,?,?)",
+      "INSERT INTO productos (producto, nombre2, precio_compra, precio_venta, codigo_barras, observaciones, image) VALUES (?,?,?,?,?,?,?)",
       [
         producto,
         nombre2,
@@ -76,6 +78,7 @@ export const createProducto = async (req, res) => {
         precio_venta,
         codigo_barras,
         observaciones,
+        image
       ]
     );
     res.send({
@@ -101,11 +104,12 @@ export const updateProducto = async (req, res) => {
     precio_venta,
     codigo_barras,
     observaciones,
+    image
   } = req.body;
 
   try {
     const [result] = await pool.query(
-      "UPDATE productos SET producto = ?, nombre2 = ?, precio_compra = ?, precio_venta = ?, codigo_barras = ?, observaciones = ? WHERE id = ?",
+      "UPDATE productos SET producto = ?, nombre2 = ?, precio_compra = ?, precio_venta = ?, codigo_barras = ?, observaciones = ?, image = ? WHERE id = ?",
       [
         producto,
         nombre2,
@@ -113,6 +117,7 @@ export const updateProducto = async (req, res) => {
         precio_venta,
         codigo_barras,
         observaciones,
+        image,
         id,
       ]
     );

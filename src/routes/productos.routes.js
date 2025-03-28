@@ -4,7 +4,7 @@ import {
   createProducto,
   updateProducto,
   deleteProducto,
-  getProducto
+  getProducto,
 } from "../controllers/productos.controller.js";
 
 //Crear un enrrutador nuevo (Es como un objeto que agrupa rutas)

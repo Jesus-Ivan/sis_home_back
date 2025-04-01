@@ -15,9 +15,9 @@ export const createImage = (req, res) => {
 
 export const getImage = (req, res) => {
   const imageName = req.params.imageName;
-  const rutaImagen = path.join(__dirname, STORAGE_PATH, imageName);
+  const rutaImagen = path.resolve(STORAGE_PATH, imageName);
 
-  res.sendFile(rutaImagen.substring(6));
+  res.sendFile(rutaImagen);
 };
 
 export const deleteImage = (req, res) => {

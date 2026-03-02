@@ -3,10 +3,8 @@ import { STORAGE_PATH } from "./config.js";
 import multer from "multer";
 
 //Crear middleware de multer (imagenes)
-const upload = multer({ dest: STORAGE_PATH });
+export const upload = multer({ dest: STORAGE_PATH });
+export const uploadMovimiento = multer({ dest: STORAGE_PATH + "movimientos" });
 
 //Crear endpont base para las rutas de las imagenes
 export const image_endpoint = "/image";
-
-export default upload
-

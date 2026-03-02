@@ -1,5 +1,7 @@
 import express from "express";
 import productosRoutes from "./src/routes/productos.routes.js";
+import clientesRoutes from "./src/routes/clientes.routes.js";
+import movimientosRoutes from "./src/routes/movimientos.routes.js"
 import indexRoutes from "./src/routes/index.routes.js";
 import { API_PORT } from "./src/config.js";
 import imagesRoutes from "./src/routes/images.routes.js";
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use(indexRoutes);
 //usando el grupo de rutas
 app.use("/api", productosRoutes);
+app.use("/api", clientesRoutes);
+app.use("/api", movimientosRoutes);
 app.use(imagesRoutes);
 
 //Manejador 404 general
